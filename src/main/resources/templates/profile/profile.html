@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+</head>
+<meta charset="UTF-8" />
+<body>
+
+  <div class="main" layout:fragment="contents">
+    <table class="table table-bordered">
+      <tr>
+        <th class="table-info">社員名</th>
+        <td th:text="${profileForm.userNameKanji}"></td>
+      </tr>
+      <tr>
+        <th class="table-info">メールアドレス</th>
+        <td th:text="${profileForm.email}"></td>
+      </tr>
+      <tr>
+        <th class="table-info">社員番号</th>
+        <td th:text="${profileForm.empNo}"></td>
+      </tr>
+      <tr>
+        <th class="table-info">拠点</th>
+        <td th:text="${profileForm.base}"></td>
+      </tr>
+    </table>
+
+    <a class="btn btn-primary" href="/profile/changePassword/" role="button">パスワード変更</a>
+  </div>
+</body>
+</html>

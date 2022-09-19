@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+<script th:src="@{/js/user/userEdit.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+
+  <div class="main" layout:fragment="contents">
+    <form id="userEditForm" th:action="@{/usercreate/add/}" th:object="${userEditForm}" method="POST">
+      <table class="table table-bordered">
+        <tr>
+          <th class="table-info">社員名</th>
+          <td>
+            <input class="form-control" type="text" th:field="*{userName}" />
+          </td>
+        </tr>
+        <tr>
+          <th class="table-info">社員番号</th>
+          <td>
+            <input class="form-control" type="text" th:field="*{empNo}" />
+          </td>
+        </tr>
+        <tr>
+          <th class="table-info">メールアドレス</th>
+          <td>
+            <input class="form-control" type="text" th:field="*{email}" />
+          </td>
+        </tr>
+        <tr>
+          <th class="table-info">拠点</th>
+          <td>
+            <select class="form-control" th:field="*{base}">
+              <option value="東京">東京</option>
+              <option value="名古屋">名古屋</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+      <button class="btn btn-primary" type="button" th:if="${viewStatus == 'add'}" onclick="addUser()">登録</button>
+      <button class="btn btn-primary" type="button" th:if="${viewStatus == 'update'}" onclick="updateUser()">更新</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+<link th:href="@{/css/activity/salesActivity.css}" rel="stylesheet" />
+<link th:href="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.css}" rel="stylesheet" />
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.js}"></script>
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/l10n/ja.js}"></script>
+<script th:src="@{/js/activity/salesActivity.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main" layout:fragment="contents">
+    <form id="salesActivityForm" th:action="@{/sales/work/add/}" th:object="${salesActivityForm}" method="POST">
+      <span class="title">営業活動実績</span>
+      <table class="table table-bordered">
+        <tr>
+          <td class="table-info">会社名</td>
+          <td colspan="3">
+            <label th:text="${salesActivityForm.companyName}"></label>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-info">拠点</td>
+          <td>
+            <select th:field="*{salesWorkBase}" class="form-control">
+              <option value="東京">東京</option>
+              <option value="名古屋">名古屋</option>
+            </select>
+          </td>
+
+          <td class="table-info">担当</td>
+          <td>
+            <select th:field="*{salesWorkResponsible}" class="form-control">
+              <option th:each="account : ${salesActivityForm.salesWorkResponsibleList}" th:value="${account.userName}" th:text="${account.userName}"></option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-info">区分</td>
+          <td>
+            <select th:field="*{salesWorkKubun}" class="form-control">
+              <option th:each="kubun : ${kubunList}" th:value="${kubun.value}" th:text="${kubun.value}"></option>
+            </select>
+          </td>
+
+          <td class="table-info">営業日</td>
+          <td>
+            <input class="form-control" type="text" id="salesWorkBusinessDay" readonly th:field="*{salesWorkBusinessDay}" />
+          </td>
+        </tr>
+        <tr>
+          <td class="table-info">顧客担当者</td>
+          <td colspan="3">
+            <select th:field="*{salesWorkCustomerResponsible}" class="form-control">
+              <option th:each="staff : ${salesActivityForm.staffList}" th:value="${staff.staffName}" th:text="${staff.staffName}"></option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-info">活動詳細</td>
+          <td colspan="3">
+            <textarea rows="5" cols="110" th:field="*{salesWorkWorkDetail}"></textarea>
+          </td>
+        </tr>
+      </table>
+      <span class="title">次回営業予定</span>
+      <table class="table table-bordered">
+        <tr>
+          <td class="table-info">拠点</td>
+          <td>
+            <select th:field="*{salesPlanBase}" class="form-control">
+              <option value="東京">東京</option>
+              <option value="名古屋">名古屋</option>
+            </select>
+          </td>
+
+          <td class="table-info">担当</td>
+          <td>
+            <select th:field="*{salesPlanResponsible}" class="form-control">
+              <option th:each="account : ${salesActivityForm.salesWorkResponsibleList}" th:value="${account.userName}" th:text="${account.userName}"></option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-info">区分</td>
+          <td>
+            <select th:field="*{salesPlanKubun}" class="form-control">
+              <option th:each="kubun : ${kubunList}" th:value="${kubun.value}" th:text="${kubun.value}"></option>
+            </select>
+          </td>
+          <td class="table-info">営業日</td>
+          <td>
+            <input class="form-control" type="text" id="salesPlanSalesExpectedDate" th:field="*{salesPlanSalesExpectedDate}" readonly />
+          </td>
+        </tr>
+        <tr>
+          <td class="table-info">顧客担当者</td>
+          <td colspan="3">
+            <select th:field="*{salesPlanCustomerResponsible}" class="form-control">
+              <option th:each="staff : ${salesActivityForm.staffList}" th:value="${staff.staffName}" th:text="${staff.staffName}"></option>
+            </select>
+          </td>
+        </tr>
+      </table>
+      <div class="button-area">
+        <button class="btn btn-primary" th:if="${salesActivityForm.sendType != 'edit'}" type="button" onclick="insertSalesActivity()">登録</button>
+        <button class="btn btn-primary" th:if="${salesActivityForm.sendType == 'edit'}" type="button" onclick="updateSalesActivity()">更新</button>
+      </div>
+      <input type="hidden" th:field="*{companyName}" />
+      <input type="hidden" th:field="*{rank}" />
+      <input type="hidden" th:field="*{tradingAchievement}" />
+      <input type="hidden" th:field="*{beforeSalesWorkResponsible}" />
+      <input type="hidden" th:field="*{beforeSalesWorkBusinessDay}" />
+    </form>
+
+  </div>
+</body>
+</html>

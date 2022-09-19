@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/dialog}">
+<head>
+<title>ホーム</title>
+<link th:href="@{/css/dialog/searchCompany.css}" rel="stylesheet">
+<script th:src="@{/js/dialog/searchCompany.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main-dialog" layout:fragment="contents">
+    <form th:action="@{/company/list/}" th:object="${searchCompanyDialog}" method="POST">
+      <div class="search-area">
+        <table class="table">
+          <tr>
+            <th class="table-info">ランク</th>
+            <td>
+              <select class="form-control" th:field="*{rank}">
+                <option value="">なし</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-info">五十音行</th>
+            <td>
+              <select class="form-control" th:field="*{word}">
+                <option value="">なし</option>
+                <option th:each="gyo : ${gojuonList}" th:value="${gyo.value}" th:text="${gyo.value}"></option>                
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <button class="btn btn-primary" onclick="decision()">検索</button>
+    </form>
+  </div>
+</body>
+</html>

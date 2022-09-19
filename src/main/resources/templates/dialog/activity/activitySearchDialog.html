@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/dialog}">
+<head>
+<title>ホーム</title>
+<link th:href="@{/css/dialog/activitySearchDialog.css}" rel="stylesheet">
+<link th:href="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.css}" rel="stylesheet" />
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.js}"></script>
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/l10n/ja.js}"></script>
+<script th:src="@{/js/dialog/activitySearchDialog.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main-dialog" layout:fragment="contents">
+    <form th:action="@{/sales/confirm/}" th:object="${searchDialog}" method="POST" id="activitySeachDialogForm">
+      <div class="search-area">
+        <table class="table">
+          <tr>
+            <th class="table-info">会社情報</th>
+            <td colspan="3">
+              <select th:field="*{companyName}" onchange="changeCompany()" class="form-control" id="company-list">
+                <option value="">なし</option>
+                <option th:each="companyName : ${searchDialog.companyList}" th:value="${companyName}" th:text="${companyName}"></option>
+              </select>
+            </td>
+          </tr>
+           <tr>
+            <th class="table-info">担当者(FOIS)</th>
+            <td colspan="3">
+              <select th:field="*{foisStaffName}" class="form-control" id="fois-staff-list">
+                <option value="">なし</option>
+                <option th:each="foisStaffName : ${searchDialog.foisStaffList}" th:value="${foisStaffName}" th:text="${foisStaffName}"></option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-info">担当者(顧客)</th>
+            <td colspan="3">
+              <select th:field="*{staffName}" class="form-control" id="staff-list">
+                <option value="">なし</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-info">期間</th>
+            <td>
+              <input class="form-control" id="fromDate" type="text" th:field="*{fromDate}" readonly size="1">
+            </td>
+            <td>～</td>
+            <td>
+              <input class="form-control" id="toDate" type="text" th:field="*{toDate}" readonly size="1">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <button class="btn btn-primary" onclick="decision()">検索</button>
+    </form>
+  </div>
+</body>
+</html>

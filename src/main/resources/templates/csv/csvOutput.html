@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+<link th:href="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.css}" rel="stylesheet" />
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.js}"></script>
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/l10n/ja.js}"></script>
+<script th:src="@{/js/csv/csvOutput.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main" layout:fragment="contents">
+    <form th:action="@{/csv/output/}" th:object="${csvInputForm}" th:method="POST">
+      <table class="table table-bordered">
+        <tr>
+          <th class="table-info">出力フォーマット</th>
+          <td colspan="3">
+            <select class="form-control" th:field="*{formatId}">
+              <option th:each="csvFormat : ${csvFormatList}" th:value="${csvFormat.outputId}" th:text="${csvFormat.outputName}"></option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th class="table-info">期間</th>
+          <td>
+            <input class="form-control" id="periodFromDate" type="text" th:field="*{periodFromDate}" readonly size="1">
+          </td>
+          <td width="10">～</td>
+          <td>
+            <input class="form-control" id="periodToDate" type="text" th:field="*{periodToDate}" readonly size="1">
+          </td>
+        </tr>
+        <tr>
+          <th class="table-info">拠点</th>
+          <td colspan="3">
+            <select class="form-control" th:field="*{base}">
+              <option value="">なし</option>
+              <option value="東京">東京</option>
+              <option value="名古屋">名古屋</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+      <div class="button-area">
+        <button class="btn btn-primary">出力</button>
+      </div>
+      <input type="hidden" id="messageId" th:value="${messageId}"/>
+    </form>
+  </div>
+</body>
+</html>

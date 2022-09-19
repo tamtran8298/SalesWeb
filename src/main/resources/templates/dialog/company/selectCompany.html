@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/dialog}">
+<head>
+<title>ホーム</title>
+<link th:href="@{/css/dialog/selectCompany.css}" rel="stylesheet">
+<script th:src="@{/js/dialog/selectCompany.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main-dialog" layout:fragment="contents">
+    <form th:action="@{/sales/}" th:object="${companyDialog}" method="POST">
+      <div class="header">
+        <span class="title">会社選択</span>
+      </div>
+      <div class="company-label">
+        <span id="company-name-label">会社名を選択してください</span>
+      </div>
+      <div class="company-word-list">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item" onclick="selectWord(this)" data-word="ア">ア</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="カ">カ</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="サ">サ</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="タ">タ</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="ナ">ナ</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="ハ">ハ</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="マ">マ</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="ヤ">ヤ</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="ラ">ラ</li>
+          <li class="list-group-item" onclick="selectWord(this)" data-word="ワ">ワ</li>
+        </ul>
+      </div>
+      <div class="company-list">
+        <ul class="list-group company-ul" th:field="*{companyName}" id="company-list">
+          <li layout:fragment="companyList" />
+        </ul>
+      </div>
+      <hr>
+      <div class="decision">
+        <button class="btn btn-primary" id="decision-button" disabled>決定</button>
+        <input type="hidden" name="selectCompanyName" id="selectCompanyName" value="" />
+      </div>
+    </form>
+  </div>
+</body>
+</html>

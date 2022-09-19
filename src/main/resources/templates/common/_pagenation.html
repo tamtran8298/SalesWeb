@@ -1,0 +1,23 @@
+<div th:fragment="pagenation(actionUrl)">
+  <th:block th:if="${pageInfo.maxPageNo != 1}">
+    <ul class="list-group list-group-horizontal page-ul">
+      <th:block th:each="i : ${#numbers.sequence(1, pageInfo.maxPageNo)}">
+        <th:block th:if="${i <= 5}">
+          <li th:if="${pageInfo.currentPageNo == i}" class="list-group-item active page-li" th:text="${i}"></li>
+          <li th:if="${pageInfo.currentPageNo != i}" class="list-group-item page-li">
+            <a th:href="|${actionUrl}${i}/|">[[${i}]]</a>
+          </li>
+        </th:block>
+
+        <th:block th:if="${i == 6}">
+          <li class="list-group-item page-li-move">
+            <input type="text" id="movePageText" size="2" />
+            <span>[[${pageInfo.maxPageNo}]]</span>
+            <button class="btn btn-success" type="button" onclick="movePage('/sales/confirm/')">移動</button>
+          </li>
+          <input type="hidden" id="maxPageNo" th:value="${pageInfo.maxPageNo}" />
+        </th:block>
+      </th:block>
+    </ul>
+  </th:block>
+</div>

@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.button-area button{
+	width:100%;
+}
+
+.button-area-add button{
+	width:15%;
+}
+
+#content .title {
+	background-color: #ffdab9;
+	font-weight: bold;
+}
+
+#workDetail{
+	font-size:16px;
+}
+
+.title{
+	font-weight: bold;
+	font-size:20px;
+}

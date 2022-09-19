@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.fois.sales.infra.mapper.SalesActivityMapper">
+  <resultMap id="BaseResultMap" type="jp.co.fois.sales.domain.entity.SalesActivity">
+    <id column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+    <id column="SALES_WORK_RESPONSIBLE" jdbcType="VARCHAR" property="salesWorkResponsible" />
+    <id column="SALES_WORK_BUSINESS_DAY" jdbcType="DATE" property="salesWorkBusinessDay" />
+    <result column="RANK" jdbcType="CHAR" property="rank" />
+    <result column="TRADING_ACHIEVEMENT" jdbcType="BOOLEAN" property="tradingAchievement" />
+    <result column="SALES_WORK_BASE" jdbcType="VARCHAR" property="salesWorkBase" />
+    <result column="SALES_WORK_KUBUN" jdbcType="VARCHAR" property="salesWorkKubun" />
+    <result column="SALES_WORK_CUSTOMER_RESPONSIBLE" jdbcType="VARCHAR" property="salesWorkCustomerResponsible" />
+    <result column="SALES_WORK_WORK_DETAIL" jdbcType="VARCHAR" property="salesWorkWorkDetail" />
+    <result column="SALES_PLAN_BASE" jdbcType="VARCHAR" property="salesPlanBase" />
+    <result column="SALES_PLAN_RESPONSIBLE" jdbcType="VARCHAR" property="salesPlanResponsible" />
+    <result column="SALES_PLAN_KUBUN" jdbcType="VARCHAR" property="salesPlanKubun" />
+    <result column="SALES_PLAN_SALES_EXPECTED_DATE" jdbcType="DATE" property="salesPlanSalesExpectedDate" />
+    <result column="SALES_PLAN_CUSTOMER_RESPONSIBLE" jdbcType="VARCHAR" property="salesPlanCustomerResponsible" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="CREATE_USER" jdbcType="VARCHAR" property="createUser" />
+    <result column="UPDATE_USER" jdbcType="VARCHAR" property="updateUser" />
+    <result column="count" jdbcType="INTEGER" property="count" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    COMPANY_NAME, SALES_WORK_RESPONSIBLE, SALES_WORK_BUSINESS_DAY, RANK, TRADING_ACHIEVEMENT,
+    SALES_WORK_BASE, SALES_WORK_KUBUN, SALES_WORK_CUSTOMER_RESPONSIBLE, SALES_WORK_WORK_DETAIL,
+    SALES_PLAN_BASE, SALES_PLAN_RESPONSIBLE, SALES_PLAN_KUBUN, SALES_PLAN_SALES_EXPECTED_DATE,
+    SALES_PLAN_CUSTOMER_RESPONSIBLE, CREATE_TIME, UPDATE_TIME, CREATE_USER, UPDATE_USER
+  </sql>
+  <select id="selectByExample" parameterType="jp.co.fois.sales.domain.entity.SalesActivityExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from SCHEMA01.SALES_ACTIVITY
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="jp.co.fois.sales.domain.entity.SalesActivityKey" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from SCHEMA01.SALES_ACTIVITY
+    where COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+    and SALES_WORK_RESPONSIBLE = #{salesWorkResponsible,jdbcType=VARCHAR}
+    and SALES_WORK_BUSINESS_DAY =
+    #{salesWorkBusinessDay,jdbcType=DATE}
+  </select>
+
+  <select id="selectByBase" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from SCHEMA01.SALES_ACTIVITY
+    where SALES_WORK_BASE = #{salesWorkBase,jdbcType=VARCHAR}
+    order by SALES_WORK_BUSINESS_DAY desc
+  </select>
+
+  <select id="selectCompanySum" parameterType="java.util.Date" resultMap="BaseResultMap">
+    select COMPANY_NAME, count(COMPANY_NAME) as count from schema01.SALES_ACTIVITY
+    where SALES_WORK_BUSINESS_DAY&gt;=
+    #{fromDate, jdbcType=DATE} and SALES_WORK_BUSINESS_DAY&lt;=#{toDate, jdbcType=DATE} group by COMPANY_NAME
+  </select>
+
+  <select id="selectByCsvInputForm" parameterType="jp.co.fois.sales.app.web.form.csv.CsvInputForm" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from SCHEMA01.SALES_ACTIVITY
+    where SALES_WORK_BUSINESS_DAY &gt;= #{periodFromDate,jdbcType=DATE} and SALES_WORK_BUSINESS_DAY &lt;= #{periodToDate,jdbcType=DATE}
+
+    <if test="base != ''">
+      and SALES_WORK_BASE = #{base}
+    </if>
+    order by SALES_WORK_BUSINESS_DAY asc
+
+  </select>
+
+  <select id="selectBySeachDialog" parameterType="jp.co.fois.sales.app.web.dialog.activity.SearchDialog" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from SCHEMA01.SALES_ACTIVITY
+
+    <where>
+      <if test="companyName != null and companyName != ''">
+        and company_name = #{companyName}
+      </if>
+      <if test="staffName != null and staffName != ''">
+        and SALES_WORK_CUSTOMER_RESPONSIBLE = #{staffName}
+      </if>
+      <if test="foisStaffName != null and foisStaffName != ''">
+        and SALES_WORK_RESPONSIBLE = #{foisStaffName}
+      </if>
+
+      <if test="fromDate != null and toDate != null">
+        and SALES_WORK_BUSINESS_DAY &gt;= #{fromDate,jdbcType=DATE} and SALES_WORK_BUSINESS_DAY &lt;= #{toDate,jdbcType=DATE}
+      </if>
+
+    </where>
+  </select>
+  <select id="selectCompanyName" parameterType="java.lang.String" resultType="string">
+    select distinct
+    company_name
+    from SCHEMA01.SALES_ACTIVITY
+    <where>
+      <if test="companyName != null">
+        COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+      </if>
+    </where>
+    order by COMPANY_NAME asc
+  </select>
+  
+
+  <delete id="deleteByPrimaryKey" parameterType="jp.co.fois.sales.domain.entity.SalesActivityKey">
+    delete from SCHEMA01.SALES_ACTIVITY
+    where COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+    and SALES_WORK_RESPONSIBLE =
+    #{salesWorkResponsible,jdbcType=VARCHAR}
+    and SALES_WORK_BUSINESS_DAY = #{salesWorkBusinessDay,jdbcType=DATE}
+  </delete>
+  <delete id="deleteByExample" parameterType="jp.co.fois.sales.domain.entity.SalesActivityExample">
+    delete from SCHEMA01.SALES_ACTIVITY
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="jp.co.fois.sales.domain.entity.SalesActivity">
+    insert into SCHEMA01.SALES_ACTIVITY (COMPANY_NAME, SALES_WORK_RESPONSIBLE,
+    SALES_WORK_BUSINESS_DAY, RANK, TRADING_ACHIEVEMENT,
+    SALES_WORK_BASE,
+    SALES_WORK_KUBUN, SALES_WORK_CUSTOMER_RESPONSIBLE,
+    SALES_WORK_WORK_DETAIL, SALES_PLAN_BASE, SALES_PLAN_RESPONSIBLE,
+    SALES_PLAN_KUBUN, SALES_PLAN_SALES_EXPECTED_DATE,
+    SALES_PLAN_CUSTOMER_RESPONSIBLE,
+    CREATE_TIME,
+    UPDATE_TIME, CREATE_USER, UPDATE_USER
+    )
+    values (#{companyName,jdbcType=VARCHAR}, #{salesWorkResponsible,jdbcType=VARCHAR},
+    #{salesWorkBusinessDay,jdbcType=DATE}, #{rank,jdbcType=CHAR},
+    #{tradingAchievement,jdbcType=BOOLEAN},
+    #{salesWorkBase,jdbcType=VARCHAR}, #{salesWorkKubun,jdbcType=VARCHAR}, #{salesWorkCustomerResponsible,jdbcType=VARCHAR},
+    #{salesWorkWorkDetail,jdbcType=VARCHAR}, #{salesPlanBase,jdbcType=VARCHAR}, #{salesPlanResponsible,jdbcType=VARCHAR},
+    #{salesPlanKubun,jdbcType=VARCHAR},
+    #{salesPlanSalesExpectedDate,jdbcType=DATE},
+    #{salesPlanCustomerResponsible,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+    #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR},
+    #{updateUser,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="jp.co.fois.sales.domain.entity.SalesActivity">
+    insert into SCHEMA01.SALES_ACTIVITY
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="companyName != null">
+        COMPANY_NAME,
+      </if>
+      <if test="salesWorkResponsible != null">
+        SALES_WORK_RESPONSIBLE,
+      </if>
+      <if test="salesWorkBusinessDay != null">
+        SALES_WORK_BUSINESS_DAY,
+      </if>
+      <if test="rank != null">
+        RANK,
+      </if>
+      <if test="tradingAchievement != null">
+        TRADING_ACHIEVEMENT,
+      </if>
+      <if test="salesWorkBase != null">
+        SALES_WORK_BASE,
+      </if>
+      <if test="salesWorkKubun != null">
+        SALES_WORK_KUBUN,
+      </if>
+      <if test="salesWorkCustomerResponsible != null">
+        SALES_WORK_CUSTOMER_RESPONSIBLE,
+      </if>
+      <if test="salesWorkWorkDetail != null">
+        SALES_WORK_WORK_DETAIL,
+      </if>
+      <if test="salesPlanBase != null">
+        SALES_PLAN_BASE,
+      </if>
+      <if test="salesPlanResponsible != null">
+        SALES_PLAN_RESPONSIBLE,
+      </if>
+      <if test="salesPlanKubun != null">
+        SALES_PLAN_KUBUN,
+      </if>
+      <if test="salesPlanSalesExpectedDate != null">
+        SALES_PLAN_SALES_EXPECTED_DATE,
+      </if>
+      <if test="salesPlanCustomerResponsible != null">
+        SALES_PLAN_CUSTOMER_RESPONSIBLE,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="salesWorkResponsible != null">
+        #{salesWorkResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="salesWorkBusinessDay != null">
+        #{salesWorkBusinessDay,jdbcType=DATE},
+      </if>
+      <if test="rank != null">
+        #{rank,jdbcType=CHAR},
+      </if>
+      <if test="tradingAchievement != null">
+        #{tradingAchievement,jdbcType=BOOLEAN},
+      </if>
+      <if test="salesWorkBase != null">
+        #{salesWorkBase,jdbcType=VARCHAR},
+      </if>
+      <if test="salesWorkKubun != null">
+        #{salesWorkKubun,jdbcType=VARCHAR},
+      </if>
+      <if test="salesWorkCustomerResponsible != null">
+        #{salesWorkCustomerResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="salesWorkWorkDetail != null">
+        #{salesWorkWorkDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="salesPlanBase != null">
+        #{salesPlanBase,jdbcType=VARCHAR},
+      </if>
+      <if test="salesPlanResponsible != null">
+        #{salesPlanResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="salesPlanKubun != null">
+        #{salesPlanKubun,jdbcType=VARCHAR},
+      </if>
+      <if test="salesPlanSalesExpectedDate != null">
+        #{salesPlanSalesExpectedDate,jdbcType=DATE},
+      </if>
+      <if test="salesPlanCustomerResponsible != null">
+        #{salesPlanCustomerResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="jp.co.fois.sales.domain.entity.SalesActivityExample" resultType="java.lang.Long">
+    select count(*) from SCHEMA01.SALES_ACTIVITY
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update SCHEMA01.SALES_ACTIVITY
+    <set>
+      <if test="record.companyName != null">
+        COMPANY_NAME = #{record.companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesWorkResponsible != null">
+        SALES_WORK_RESPONSIBLE = #{record.salesWorkResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesWorkBusinessDay != null">
+        SALES_WORK_BUSINESS_DAY = #{record.salesWorkBusinessDay,jdbcType=DATE},
+      </if>
+      <if test="record.rank != null">
+        RANK = #{record.rank,jdbcType=CHAR},
+      </if>
+      <if test="record.tradingAchievement != null">
+        TRADING_ACHIEVEMENT = #{record.tradingAchievement,jdbcType=BOOLEAN},
+      </if>
+      <if test="record.salesWorkBase != null">
+        SALES_WORK_BASE = #{record.salesWorkBase,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesWorkKubun != null">
+        SALES_WORK_KUBUN = #{record.salesWorkKubun,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesWorkCustomerResponsible != null">
+        SALES_WORK_CUSTOMER_RESPONSIBLE = #{record.salesWorkCustomerResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesWorkWorkDetail != null">
+        SALES_WORK_WORK_DETAIL = #{record.salesWorkWorkDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesPlanBase != null">
+        SALES_PLAN_BASE = #{record.salesPlanBase,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesPlanResponsible != null">
+        SALES_PLAN_RESPONSIBLE = #{record.salesPlanResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesPlanKubun != null">
+        SALES_PLAN_KUBUN = #{record.salesPlanKubun,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesPlanSalesExpectedDate != null">
+        SALES_PLAN_SALES_EXPECTED_DATE = #{record.salesPlanSalesExpectedDate,jdbcType=DATE},
+      </if>
+      <if test="record.salesPlanCustomerResponsible != null">
+        SALES_PLAN_CUSTOMER_RESPONSIBLE = #{record.salesPlanCustomerResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        CREATE_USER = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateUser != null">
+        UPDATE_USER = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update SCHEMA01.SALES_ACTIVITY
+    set COMPANY_NAME = #{record.companyName,jdbcType=VARCHAR},
+    SALES_WORK_RESPONSIBLE = #{record.salesWorkResponsible,jdbcType=VARCHAR},
+    SALES_WORK_BUSINESS_DAY =
+    #{record.salesWorkBusinessDay,jdbcType=DATE},
+    RANK = #{record.rank,jdbcType=CHAR},
+    TRADING_ACHIEVEMENT = #{record.tradingAchievement,jdbcType=BOOLEAN},
+    SALES_WORK_BASE =
+    #{record.salesWorkBase,jdbcType=VARCHAR},
+    SALES_WORK_KUBUN = #{record.salesWorkKubun,jdbcType=VARCHAR},
+    SALES_WORK_CUSTOMER_RESPONSIBLE = #{record.salesWorkCustomerResponsible,jdbcType=VARCHAR},
+    SALES_WORK_WORK_DETAIL = #{record.salesWorkWorkDetail,jdbcType=VARCHAR},
+    SALES_PLAN_BASE = #{record.salesPlanBase,jdbcType=VARCHAR},
+    SALES_PLAN_RESPONSIBLE =
+    #{record.salesPlanResponsible,jdbcType=VARCHAR},
+    SALES_PLAN_KUBUN = #{record.salesPlanKubun,jdbcType=VARCHAR},
+    SALES_PLAN_SALES_EXPECTED_DATE = #{record.salesPlanSalesExpectedDate,jdbcType=DATE},
+    SALES_PLAN_CUSTOMER_RESPONSIBLE = #{record.salesPlanCustomerResponsible,jdbcType=VARCHAR},
+    CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+    UPDATE_TIME =
+    #{record.updateTime,jdbcType=TIMESTAMP},
+    CREATE_USER = #{record.createUser,jdbcType=VARCHAR},
+    UPDATE_USER = #{record.updateUser,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="jp.co.fois.sales.domain.entity.SalesActivity">
+    update SCHEMA01.SALES_ACTIVITY
+    <set>
+      <if test="rank != null">
+        RANK = #{rank,jdbcType=CHAR},
+      </if>
+      <if test="tradingAchievement != null">
+        TRADING_ACHIEVEMENT = #{tradingAchievement,jdbcType=BOOLEAN},
+      </if>
+      <if test="salesWorkBase != null">
+        SALES_WORK_BASE = #{salesWorkBase,jdbcType=VARCHAR},
+      </if>
+      <if test="salesWorkKubun != null">
+        SALES_WORK_KUBUN = #{salesWorkKubun,jdbcType=VARCHAR},
+      </if>
+      <if test="salesWorkCustomerResponsible != null">
+        SALES_WORK_CUSTOMER_RESPONSIBLE = #{salesWorkCustomerResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="salesWorkWorkDetail != null">
+        SALES_WORK_WORK_DETAIL = #{salesWorkWorkDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="salesPlanBase != null">
+        SALES_PLAN_BASE = #{salesPlanBase,jdbcType=VARCHAR},
+      </if>
+      <if test="salesPlanResponsible != null">
+        SALES_PLAN_RESPONSIBLE = #{salesPlanResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="salesPlanKubun != null">
+        SALES_PLAN_KUBUN = #{salesPlanKubun,jdbcType=VARCHAR},
+      </if>
+      <if test="salesPlanSalesExpectedDate != null">
+        SALES_PLAN_SALES_EXPECTED_DATE = #{salesPlanSalesExpectedDate,jdbcType=DATE},
+      </if>
+      <if test="salesPlanCustomerResponsible != null">
+        SALES_PLAN_CUSTOMER_RESPONSIBLE = #{salesPlanCustomerResponsible,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        UPDATE_USER = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+    and SALES_WORK_RESPONSIBLE = #{salesWorkResponsible,jdbcType=VARCHAR}
+    and SALES_WORK_BUSINESS_DAY = #{salesWorkBusinessDay,jdbcType=DATE}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="jp.co.fois.sales.domain.entity.SalesActivity">
+    update SCHEMA01.SALES_ACTIVITY
+    set RANK = #{rank,jdbcType=CHAR},
+    TRADING_ACHIEVEMENT = #{tradingAchievement,jdbcType=BOOLEAN},
+    SALES_WORK_BASE =
+    #{salesWorkBase,jdbcType=VARCHAR},
+    SALES_WORK_KUBUN = #{salesWorkKubun,jdbcType=VARCHAR},
+    SALES_WORK_CUSTOMER_RESPONSIBLE = #{salesWorkCustomerResponsible,jdbcType=VARCHAR},
+    SALES_WORK_WORK_DETAIL =
+    #{salesWorkWorkDetail,jdbcType=VARCHAR},
+    SALES_PLAN_BASE = #{salesPlanBase,jdbcType=VARCHAR},
+    SALES_PLAN_RESPONSIBLE = #{salesPlanResponsible,jdbcType=VARCHAR},
+    SALES_PLAN_KUBUN =
+    #{salesPlanKubun,jdbcType=VARCHAR},
+    SALES_PLAN_SALES_EXPECTED_DATE = #{salesPlanSalesExpectedDate,jdbcType=DATE},
+    SALES_PLAN_CUSTOMER_RESPONSIBLE = #{salesPlanCustomerResponsible,jdbcType=VARCHAR},
+    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+    UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+    CREATE_USER = #{createUser,jdbcType=VARCHAR},
+    UPDATE_USER = #{updateUser,jdbcType=VARCHAR}
+    where
+    COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+    and SALES_WORK_RESPONSIBLE = #{salesWorkResponsible,jdbcType=VARCHAR}
+    and SALES_WORK_BUSINESS_DAY = #{salesWorkBusinessDay,jdbcType=DATE}
+  </update>
+  
+    <update id="updateBySalesActivityFormPrimaryKey" parameterType="jp.co.fois.sales.domain.entity.SalesActivity">
+    update SCHEMA01.SALES_ACTIVITY
+    set RANK = #{rank,jdbcType=CHAR},
+    TRADING_ACHIEVEMENT = #{tradingAchievement,jdbcType=BOOLEAN},
+    SALES_WORK_BASE = #{salesWorkBase,jdbcType=VARCHAR},
+    SALES_WORK_RESPONSIBLE = #{salesWorkResponsible,jdbcType=VARCHAR},
+    SALES_WORK_BUSINESS_DAY = #{salesWorkBusinessDay,jdbcType=DATE},
+    SALES_WORK_KUBUN = #{salesWorkKubun,jdbcType=VARCHAR},
+    SALES_WORK_CUSTOMER_RESPONSIBLE = #{salesWorkCustomerResponsible,jdbcType=VARCHAR},
+    SALES_WORK_WORK_DETAIL = #{salesWorkWorkDetail,jdbcType=VARCHAR},
+    SALES_PLAN_BASE = #{salesPlanBase,jdbcType=VARCHAR},
+    SALES_PLAN_RESPONSIBLE = #{salesPlanResponsible,jdbcType=VARCHAR},
+    SALES_PLAN_KUBUN = #{salesPlanKubun,jdbcType=VARCHAR},
+    SALES_PLAN_SALES_EXPECTED_DATE = #{salesPlanSalesExpectedDate,jdbcType=DATE},
+    SALES_PLAN_CUSTOMER_RESPONSIBLE = #{salesPlanCustomerResponsible,jdbcType=VARCHAR},
+    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+    UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+    CREATE_USER = #{createUser,jdbcType=VARCHAR},
+    UPDATE_USER = #{updateUser,jdbcType=VARCHAR}
+    where
+    COMPANY_NAME = #{companyName,jdbcType=VARCHAR}
+    and SALES_WORK_RESPONSIBLE = #{beforeSalesWorkResponsible,jdbcType=VARCHAR}
+    and SALES_WORK_BUSINESS_DAY = #{beforeSalesWorkBusinessDay,jdbcType=DATE}
+  </update>
+  
+  
+</mapper>

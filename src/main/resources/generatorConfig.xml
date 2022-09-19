@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <classPathEntry location="E:/tool/db2jcc4.jar"/>
+  <context id="context1" >
+    <jdbcConnection driverClass="com.ibm.db2.jcc.DB2Driver" connectionURL="jdbc:db2://192.168.11.15:50000/SALESDB" userId="db2inst1" password="rinrinmamo" />
+      <javaModelGenerator targetPackage="jp.co.fois.sales.domain.entity" targetProject="SalesWeb" />
+    <sqlMapGenerator targetPackage="jp.co.fois.sales.infra.mapper" targetProject="SalesWeb" />
+    <javaClientGenerator targetPackage="jp.co.fois.sales.infra.mapper" targetProject="SalesWeb" type="XMLMAPPER" />
+      <table schema="schema01" tableName="%" >
+      </table>
+  </context>
+</generatorConfiguration>

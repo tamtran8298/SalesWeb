@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+<link th:href="@{/css/company/company.css}" rel="stylesheet" />
+<link th:href="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.css}" rel="stylesheet" />
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.js}"></script>
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/l10n/ja.js}"></script>
+<script th:src="@{/js/company/company.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main" layout:fragment="contents">
+    <form id="companyForm" th:action="@{/company/form/add/}" th:object="${companyForm}" method="POST">
+      <div>
+        <div class="title">
+          <span class="bold center">会社情報</span>
+        </div>
+        <table class="table table-bordered company-table">
+          <tr>
+            <th class="table-primary">会社名</th>
+            <td>
+              <th:block th:if="${companyForm.companyName == null || companyForm.companyName == ''}">
+                <input class="form-control" type="text" th:field="*{companyName}">
+              </th:block>
+              <th:block th:if="${companyForm.companyName != null && companyForm.companyName !=''}">
+                <input class="form-control" type="text" th:field="*{companyName}" readonly>
+              </th:block>
+
+            </td>
+            <th class="table-primary">HP</th>
+            <td>
+              <input type="text" th:field="*{hp}" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">従業員数（単体）</th>
+            <td>
+              <input type="text" th:field="*{employeeNumber}" class="form-control">
+            </td>
+            <th class="table-primary">電話番号</th>
+            <td>
+              <input type="text" th:field="*{companyTel}" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">資本金（千万）</th>
+            <td>
+              <input type="text" th:field="*{capital}" class="form-control">
+            </td>
+            <th class="table-primary">創業</th>
+            <td>
+              <input id="foundation" type="text" th:field="*{foundation}" readonly class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">事業内容</th>
+            <td colspan="3">
+              <input type="text" th:field="*{businessContents}" class="form-control">
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">商材</th>
+            <td>
+              <select class="form-control" th:field="*{commodity1}">
+                <option value="なし">なし</option>
+                <option th:each="commodity: ${commoditys}" th:value="${commodity.value}" th:text="${commodity.value}">
+              </select>
+            </td>
+            <td>
+              <select class="form-control" th:field="*{commodity2}">
+                <option value="なし">なし</option>
+                <option th:each="commodity: ${commoditys}" th:value="${commodity.value}" th:text="${commodity.value}">
+              </select>
+            </td>
+            <td>
+              <select class="form-control" th:field="*{commodity3}">
+                <option value="なし">なし</option>
+                <option th:each="commodity: ${commoditys}" th:value="${commodity.value}" th:text="${commodity.value}">
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">会社検索五十音行</th>
+            <td colspan="3">
+              <select th:field="*{companyGojuonGyo}" class="form-control">
+                <option value="ア">ア</option>
+                <option value="カ">カ</option>
+                <option value="サ">サ</option>
+                <option value="タ">タ</option>
+                <option value="ナ">ナ</option>
+                <option value="ハ">ハ</option>
+                <option value="マ">マ</option>
+                <option value="ヤ">ヤ</option>
+                <option value="ラ">ラ</option>
+                <option value="ワ">ワ</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">備考</th>
+            <td colspan="3">
+              <textarea rows="5" cols="110" th:field="*{remarks}"></textarea>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="staff-block">
+        <div class="title">
+          <span class="bold center">担当者情報</span>
+        </div>
+        <table class="table table-bordered staff-table">
+          <tr class="table-primary">
+            <th>部署</th>
+            <th>役職</th>
+            <th>姓</th>
+            <th>名</th>
+            <th>メールアドレス</th>
+            <th>電話番号</th>
+          </tr>
+          <tr th:each="staff,stat : ${companyForm.staffList}">
+            <td>
+              <input type="text" th:id="|department${stat.index}|" th:field="*{staffList[__${stat.index}__].department}" />
+            </td>
+            <td>
+              <input type="text" th:id="|position${stat.index}|" th:field="*{staffList[__${stat.index}__].position}">
+            </td>
+            <td>
+              <input type="text" th:id="|nameSei${stat.index}|" th:field="*{staffList[__${stat.index}__].nameSei}">
+            </td>
+            <td>
+              <input type="text" th:id="|name${stat.index}|" th:field="*{staffList[__${stat.index}__].name}">
+            </td>
+            <td>
+              <input type="text" th:id="|mail${stat.index}|" th:field="*{staffList[__${stat.index}__].mail}">
+            </td>
+            <td>
+              <input type="text" th:id="|tel${stat.index}|" th:field="*{staffList[__${stat.index}__].tel}">
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <div class="title">
+          <span class="bold">営業概要</span>
+        </div>
+        <table class="table table-bordered sales-summary-table">
+          <tr>
+            <th class="table-primary">ランク</th>
+            <td>
+              <select th:field="*{rank}" class="form-control">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+              </select>
+            </td>
+            <th class="table-primary">取引実績</th>
+            <td>
+              <select th:field="*{tradingAchievement}" class="form-control">
+                <option value="true">実績あり</option>
+                <option value="false">実績なし</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="button-area">
+        <button class="btn btn-primary btn-lg" type="button" onclick="addCompany()" th:if="${companyForm.companyName == null || companyForm.companyName == ''}">登録</button>
+        <button class="btn btn-primary btn-lg" type="button" onclick="updateCompany()" th:if="${companyForm.companyName != null && companyForm.companyName !=''}">更新</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

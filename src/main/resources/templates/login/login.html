@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title th:text="${viewName}"></title>
+<link th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" rel="stylesheet" />
+<link th:href="@{/css/login/login.css}" rel="stylesheet" />
+<script th:src="@{/webjars/jquery/3.4.0/dist/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/common/inputCheck.js}"></script>
+<script th:src="@{/js/common/message.js}"></script>
+<script th:src="@{/js/common/common.js}"></script>
+<script th:src="@{/js/login/login.js}"></script>
+
+</head>
+<body>
+  <div>
+    <div class="container">
+      <div class="card card-container">
+        <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+        <p id="profile-name" class="profile-name-card"></p>
+        <form class="form-signin" id="loginForm" th:action="@{/login/process/}" method="POST">
+          <span id="reauth-email" class="reauth-email"></span>
+          <input type="email" id="email" name="email" class="form-control" placeholder="Email address">
+          <input type="password" id="password" name="password" class="form-control" placeholder="Password">
+          <button class="btn btn-lg btn-primary btn-block btn-signin" type="button" onclick="doLogin()">ログイン</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

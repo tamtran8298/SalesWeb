@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.decision {
+	text-align: center;
+}
+
+.header {
+	background-color: #ffdab9;
+}
+
+.company-label {
+	font-weight: bold;
+}
+
+#company-name-label, .header .title {
+	vertical-align: middle;
+	line-height: 40px;
+}
+
+#fromDate, #toDate{
+	width:100%;
+}

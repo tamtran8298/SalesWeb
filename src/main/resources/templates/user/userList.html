@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+<script th:src="@{/js/user/userList.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main" layout:fragment="contents">
+    <form id="userListForm" th:object="${userListForm}" th:action="@{/userconfirm/}" method="POST">
+      <table class="table table-bordered">
+        <tr class="table-info">
+          <th>社員名</th>
+          <th>社員番号</th>
+          <th>メールアドレス</th>
+          <th>拠点</th>
+          <th>確認/削除</th>
+        </tr>
+        <tr th:each="user : ${userListForm.userList}">
+          <td th:text="${user.userName}"></td>
+          <td th:text="${user.empNo}"></td>
+          <td th:text="${user.email}"></td>
+          <td th:text="${user.base}"></td>
+          <td>
+            <button class="btn btn-primary" th:data-email="${user.email}" onclick="confirmUser(this)" type="button">確認</button>
+            <button class="btn btn-danger" th:data-email="${user.email}" onclick="deleteUser(this)" type="button">削除</button>
+          </td>
+        </tr>
+      </table>
+      <input type="hidden" id="email" name="email" />
+    </form>
+    <a class="btn btn-primary" href="/usercreate/" role="button">新規登録</a>
+    <input type="hidden" id="errorMessageId" th:value="${errorMessageId}" />
+  </div>
+</body>
+</html>

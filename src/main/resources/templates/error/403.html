@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title>403</title>
+<link th:href="@{/css/error/error.css}" rel="stylesheet" />
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main" layout:fragment="contents">
+    <div class="error-area">
+      <span class="message">権限がありません。 / Forbidden.</span><br />
+      <br /> <span class="message">権限が必要な場合は管理者に問い合わせてください。</span><br />
+
+    </div>
+  </div>
+</body>
+</html>

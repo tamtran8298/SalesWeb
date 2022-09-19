@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+<link th:href="@{/css/activity/salesActivity.css}" rel="stylesheet" />
+<script th:src="@{/js/common/jquery.colorbox-min.js}"></script>
+<link th:href="@{/css/common/colorbox.css}" rel="stylesheet">
+<script th:src="@{/js/activity/salesActivityConfirm.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div style="width: 70%; margin: 0 auto; padding-top: 20px;" layout:fragment="contents">
+    <form th:action="@{/sales/confirm/edit/}" th:object="${salesActivityConfirm}" id="salesActivityConfirmForm" method="POST">
+      <button class="btn btn-primary" type="button" id="searchDialogButton" onclick="showSearchDialog()">検索</button>
+      <button class="btn btn-warning" type="button" onclick="clearCondition()">クリア</button>
+      <button class="btn btn-primary" type="button" id="add">新規登録</button>
+      <table class="table table-bordered" style="width: 1413px;">
+        <tr>
+          <th rowspan="2" class="table-warning">編集/削除</th>
+          <th class="table-info">会社情報</th>
+          <th class="table-info" colspan="2">営業概要</th>
+          <th class="table-info" colspan="6">営業活動</th>
+          <th class="table-success" colspan="5">営業予定</th>
+        </tr>
+        <tr>
+          <th class="table-info">会社名</th>
+          <th class="table-info">ランク</th>
+          <th class="table-info">取引実績</th>
+          <th class="table-info">拠点</th>
+          <th class="table-info">担当</th>
+          <th class="table-info">区分</th>
+          <th class="table-info">営業日</th>
+          <th class="table-info">顧客担当</th>
+          <th class="table-info">活動詳細</th>
+          <th class="table-success">拠点</th>
+          <th class="table-success">担当</th>
+          <th class="table-success">区分</th>
+          <th class="table-success">営業日</th>
+          <th class="table-success">顧客担当</th>
+        </tr>
+        <tr th:each="salesActivityConfirm, stat : ${salesActivityConfirm.salesActivityConfirmList}">
+          <td>
+            <button class="btn btn-primary" type="button" id="confirm"
+              th:data-confirm="|${salesActivityConfirm.companyName},${salesActivityConfirm.salesWorkResponsible},${salesActivityConfirm.salesWorkBusinessDay}|" onclick="confirmSalesActivity(this)">編集</button>
+
+            <button class="btn btn-danger" type="button" id="delete"
+              th:data-confirm="|${salesActivityConfirm.companyName},${salesActivityConfirm.salesWorkResponsible},${salesActivityConfirm.salesWorkBusinessDay}|" onclick="deleteSalesActivity(this)">削除</button>
+          </td>
+          <td th:text="${salesActivityConfirm.companyName}"></td>
+          <td th:text="${salesActivityConfirm.rank}"></td>
+          <td th:text="${salesActivityConfirm.tradingAchievement}"></td>
+          <td th:text="${salesActivityConfirm.salesWorkBase}"></td>
+          <td th:text="${salesActivityConfirm.salesWorkResponsible}"></td>
+          <td th:text="${salesActivityConfirm.salesWorkKubun}"></td>
+          <td th:text="${salesActivityConfirm.salesWorkBusinessDay}"></td>
+          <td th:text="${salesActivityConfirm.salesWorkCustomerResponsible}"></td>
+          <td>
+            <a href="#content" th:class="|workDetailLink${stat.index}|" onclick="showWorkDetail(this)" th:data-work-detail="${salesActivityConfirm.salesWorkWorkDetail}">詳細</a>
+          </td>
+          <td th:text="${salesActivityConfirm.salesPlanBase}"></td>
+          <td th:text="${salesActivityConfirm.salesPlanResponsible}"></td>
+          <td th:text="${salesActivityConfirm.salesPlanKubun}"></td>
+          <td th:text="${salesActivityConfirm.salesPlanSalesExpectedDate}"></td>
+          <td th:text="${salesActivityConfirm.salesPlanCustomerResponsible}"></td>
+        </tr>
+      </table>
+      <input type="hidden" th:field="*{companyName}" id="companyName" />
+      <input type="hidden" th:field="*{salesWorkResponsible}" id="salesWorkResponsible" />
+      <input type="hidden" th:field="*{salesWorkBusinessDay}" id="salesWorkBusinessDay" />
+      <input type="hidden" th:field="*{sendType}" id="sendType" />
+    </form>
+
+    <div class="page" th:include="common/_pagenation :: pagenation('/sales/confirm/')"></div>
+
+
+
+
+    <!--/* 活動詳細のモーダル */-->
+    <div style="display: none">
+      <div id="content">
+        <div class="title">
+          <span>活動詳細の内容</span>
+        </div>
+        <hr>
+        <div>
+          <label id="workDetail"></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

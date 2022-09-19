@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+<link th:href="@{/css/company/companyList.css}" rel="stylesheet" />
+<link th:href="@{/css/common/colorbox.css}" rel="stylesheet">
+<script th:src="@{/js/common/jquery.colorbox-min.js}"></script>
+<script th:src="@{/js/company/companyList.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main" layout:fragment="contents">
+    <form id="companyListForm" th:action="@{/company/form/}" method="POST">
+      <div class="button-area">
+        <button class="btn btn-primary" id="searchDialogButton" type="button" onclick="showSearchDialog()">検索</button>
+        <a href="/company/list/" class="btn btn-warning">クリア</a>
+        <button class="btn btn-primary" type="button" onclick="addCompany()">新規登録</button>
+      </div>
+      <table class="table table-bordered">
+        <tr class="table-info">
+          <th width="250">会社名</th>
+          <th>ランク</th>
+          <th>商材1</th>
+          <th>商材2</th>
+          <th>商材3</th>
+          <th width="158">確認/編集</th>
+        </tr>
+        <tr th:each="company : ${companyForm.companyList}">
+          <td th:text="${company.companyName}"></td>
+          <td th:text="${company.rank}"></td>
+          <td th:text="${company.commodity1}"></td>
+          <td th:text="${company.commodity2}"></td>
+          <td th:text="${company.commodity3}"></td>
+          <td>
+            <button class="btn btn-primary" type="button" onclick="editCompany(this)" th:data-company-name="${company.companyName}">編集</button>
+            <button class="btn btn-success" type="button" onclick="confirmCompany(this)" th:data-company-name="${company.companyName}">確認</button>
+          </td>
+        </tr>
+      </table>
+      <input type="hidden" name="companyName" id="companyName" />
+    </form>
+  </div>
+</body>
+</html>

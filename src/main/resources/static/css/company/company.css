@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+.company-table {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.staff-table {
+	height: 50%;
+	width: 100%;
+	margin: 0 auto;
+	overflow: scroll;
+}
+
+.sales-summary-table {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.button-area {
+	padding-top: 10px;
+}
+
+.staff-block {
+	max-height: 377px;
+	overflow: scroll;
+	width: 136%;
+}

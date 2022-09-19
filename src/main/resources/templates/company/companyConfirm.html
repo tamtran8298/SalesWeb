@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{common/layout}">
+<head>
+<title th:text="${viewName}"></title>
+<link th:href="@{/css/company/company.css}" rel="stylesheet" />
+<link th:href="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.css}" rel="stylesheet" />
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/flatpickr.min.js}"></script>
+<script th:src="@{/webjars/flatpickr/4.5.7/dist/l10n/ja.js}"></script>
+<script th:src="@{/js/company/company.js}"></script>
+</head>
+<meta charset="UTF-8" />
+<body>
+  <div class="main" layout:fragment="contents">
+    <form id="companyForm" th:action="@{/company/form/add/}" th:object="${companyForm}" method="POST">
+      <div>
+        <div class="title">
+          <span class="bold center">会社情報</span>
+        </div>
+        <table class="table table-bordered company-table">
+          <tr>
+            <th class="table-primary">会社名</th>
+            <td>
+              <span th:text="*{companyName}"></span>
+            </td>
+            <th class="table-primary">HP</th>
+            <td>
+              <a th:href="*{hp}" th:text="*{hp}" target="_blank"></a>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">従業員数（単体）</th>
+            <td>
+              <span th:text="*{employeeNumber}"></span>
+            </td>
+            <th class="table-primary">電話番号</th>
+            <td>
+              <span th:text="*{companyTel}"></span>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">資本金（千万）</th>
+            <td>
+              <span th:text="*{capital}"></span>
+            </td>
+            <th class="table-primary">創業</th>
+            <td>
+              <span th:text="*{foundation}"></span>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">事業内容</th>
+            <td colspan="3">
+              <span th:text="*{businessContents}"></span>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">商材</th>
+            <td>
+              <span th:text="*{commodity1}"></span>
+            </td>
+            <td>
+              <span th:text="*{commodity2}"></span>
+            </td>
+            <td>
+              <span th:text="*{commodity3}"></span>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">会社検索五十音行</th>
+            <td colspan="3">
+              <span th:text="*{companyGojuonGyo}"></span>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-primary">備考</th>
+            <td colspan="3">
+              <span th:text="*{remarks}"></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="staff-block">
+        <div class="title">
+          <span class="bold center">担当者情報</span>
+        </div>
+        <table class="table table-bordered staff-table">
+          <tr class="table-primary">
+            <th>部署</th>
+            <th>役職</th>
+            <th>姓</th>
+            <th>名</th>
+            <th>メールアドレス</th>
+            <th>電話番号</th>
+          </tr>
+          <tr th:each="staff,stat : ${companyForm.staffList}">
+            <td>
+              <span th:text="*{staffList[__${stat.index}__].department}"></span>
+            </td>
+            <td>
+              <span th:text="*{staffList[__${stat.index}__].position}"></span>
+            </td>
+            <td>
+              <span th:text="*{staffList[__${stat.index}__].nameSei}"></span>
+            </td>
+            <td>
+              <span th:text="*{staffList[__${stat.index}__].name}"></span>
+            </td>
+            <td>
+              <span th:text="*{staffList[__${stat.index}__].mail}"></span>
+            </td>
+            <td>
+              <span th:text="*{staffList[__${stat.index}__].tel}"></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <div class="title">
+          <span class="bold">営業概要</span>
+        </div>
+        <table class="table table-bordered sales-summary-table">
+          <tr>
+            <th class="table-primary">ランク</th>
+            <td>
+              <span th:text="*{rank}"></span>
+            </td>
+            <th class="table-primary">取引実績</th>
+            <td>
+              <span th:text="*{tradingAchievement} ? '実績あり' : '実績なし'"></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
